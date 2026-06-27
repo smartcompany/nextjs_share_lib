@@ -31,14 +31,25 @@ type AIChatPresetConfigFields = {
   reasoning_effort?: string;
 };
 
+/**
+ * Provider-agnostic completion payload.
+ * Known fields are typed for common access; extra provider fields pass through.
+ */
+export type AIChatCompletionMessage = {
+  content?: string | null;
+  [key: string]: unknown;
+};
+
 export type AIChatCompletionChoice = {
-  message?: { content?: string | null };
+  message?: AIChatCompletionMessage;
   finish_reason?: string | null;
+  [key: string]: unknown;
 };
 
 export type AIChatCompletionResponse = {
   choices: AIChatCompletionChoice[];
   usage?: Record<string, unknown>;
+  [key: string]: unknown;
 };
 
 /** Caller input — image model is resolved inside the library. */
@@ -52,10 +63,19 @@ export type AIImageEditRequest = AIImageEditParams & {
 };
 
 export type AIImageEditResponse = {
-  data?: Array<{ url?: string | null }>;
+  data?: Array<Record<string, unknown>>;
+  [key: string]: unknown;
 };
 
 export type AIClientOptions = {
   apiKey: string;
   provider?: AIProvider;
 };
+
+/** First text content from a chat completion (convenience for callers). */
+export function getChatCompletionText(
+  response: AIChatCompletionResponse,
+): string | null {
+  const content = response.choices[0]?.message?.content;
+  return typeof content === "string" ? content : null;
+}

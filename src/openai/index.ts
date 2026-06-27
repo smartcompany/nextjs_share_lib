@@ -1,6 +1,7 @@
 export {
   AIClient,
   createAIClient,
+  getChatCompletionText,
   type AIChatCompletionParams,
   type AIChatCompletionResponse,
   type AIChatPreset,

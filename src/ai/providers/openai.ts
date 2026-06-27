@@ -7,6 +7,12 @@ import type {
   AIImageEditResponse,
 } from "../types";
 
+function toPlainRecord(value: unknown): Record<string, unknown> {
+  return typeof value === "object" && value !== null
+    ? { ...(value as Record<string, unknown>) }
+    : {};
+}
+
 export class OpenAIProvider {
   private readonly client: OpenAI;
 
@@ -21,7 +27,14 @@ export class OpenAIProvider {
       request as OpenAI.Chat.ChatCompletionCreateParamsNonStreaming,
     );
 
-    return response as AIChatCompletionResponse;
+    return {
+      choices: response.choices.map((choice) => ({
+        ...toPlainRecord(choice),
+        message: choice.message ? toPlainRecord(choice.message) : undefined,
+        finish_reason: choice.finish_reason,
+      })),
+      usage: response.usage ? toPlainRecord(response.usage) : undefined,
+    };
   }
 
   async editImage(request: AIImageEditRequest): Promise<AIImageEditResponse> {
@@ -31,6 +44,9 @@ export class OpenAIProvider {
       prompt: request.prompt,
     });
 
-    return response as AIImageEditResponse;
+    return {
+      ...toPlainRecord(response),
+      data: response.data?.map((item) => toPlainRecord(item)),
+    };
   }
 }
