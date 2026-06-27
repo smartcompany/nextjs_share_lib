@@ -1,7 +1,6 @@
 # nextjs-share-lib
 
-Next.js 서버 프로젝트에서 공통으로 쓰는 OpenAI 설정 모듈입니다.  
-`flutter_share_lib`와 같이 로컬 path dependency로 연결합니다.
+Next.js 서버 프로젝트에서 공통으로 쓰는 OpenAI 설정 모듈입니다.
 
 ## 설치
 
@@ -9,9 +8,15 @@ Next.js 서버 프로젝트에서 공통으로 쓰는 OpenAI 설정 모듈입니
 // server/package.json
 {
   "dependencies": {
-    "nextjs-share-lib": "file:../../nextjs_share_lib"
+    "nextjs-share-lib": "github:smartcompany/nextjs_share_lib#v0.1.0"
   }
 }
+```
+
+로컬에서 lib를 직접 수정하며 개발할 때:
+
+```json
+"nextjs-share-lib": "file:../../nextjs_share_lib"
 ```
 
 ```ts
@@ -78,4 +83,9 @@ const visionConfig = getOpenAIChatConfig({ preset: "vision" });
 | `reasoning` | `gpt-5-mini` |
 
 preset 기본값은 `src/openai/config.ts`의 `OPENAI_MODEL_PRESETS`에서 한 곳만 수정하면 됩니다.
-# nextjs_share_lib
+
+## 버전 업데이트
+
+1. `nextjs_share_lib`에서 변경 후 태그 push (`git tag v0.1.1 && git push origin v0.1.1`)
+2. 각 server `package.json`의 ref를 새 태그로 변경
+3. `npm install` 후 배포
