@@ -1,0 +1,20 @@
+{
+  "name": "nextjs-share-lib",
+  "version": "0.1.0",
+  "description": "Shared Next.js utilities (OpenAI model config, client factory, etc.)",
+  "private": true,
+  "type": "module",
+  "main": "./src/index.ts",
+  "types": "./src/index.ts",
+  "exports": {
+    ".": "./src/index.ts",
+    "./openai": "./src/openai/index.ts"
+  },
+  "peerDependencies": {
+    "openai": ">=5.0.0"
+  },
+  "devDependencies": {
+    "openai": "^6.33.0",
+    "typescript": "^5.8.3"
+  }
+}
