@@ -8,6 +8,7 @@
   "types": "./src/index.ts",
   "exports": {
     ".": "./src/index.ts",
+    "./ai": "./src/ai/index.ts",
     "./openai": "./src/openai/index.ts"
   },
   "peerDependencies": {
