@@ -1,4 +1,5 @@
 import { AI_IMAGE_EDIT_MODEL, getAIChatPresetConfig } from "./config";
+import { GeminiProvider } from "./providers/gemini";
 import { OpenAIProvider } from "./providers/openai";
 import type {
   AIChatCompletionParams,
@@ -25,6 +26,8 @@ function createProvider(
   switch (provider) {
     case "openai":
       return new OpenAIProvider(apiKey);
+    case "gemini":
+      return new GeminiProvider(apiKey);
     default: {
       const unsupported: never = provider;
       throw new Error(`Unsupported AI provider: ${unsupported}`);
@@ -34,8 +37,10 @@ function createProvider(
 
 export class AIClient {
   private readonly provider: AIProviderImpl;
+  private readonly providerName: AIProvider;
 
   constructor({ apiKey, provider = "openai" }: AIClientOptions) {
+    this.providerName = provider;
     this.provider = createProvider(provider, apiKey);
   }
 
@@ -43,7 +48,7 @@ export class AIClient {
     params: AIChatCompletionParams,
   ): Promise<AIChatCompletionResponse> {
     const { preset = "default", messages, response_format } = params;
-    const presetConfig = getAIChatPresetConfig(preset);
+    const presetConfig = getAIChatPresetConfig(this.providerName, preset);
 
     return this.provider.createChatCompletion({
       ...presetConfig,

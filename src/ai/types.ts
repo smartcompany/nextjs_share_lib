@@ -1,12 +1,16 @@
 import type { AIChatPreset } from "./config";
 
-export type AIProvider = "openai";
+export type AIProvider = "openai" | "gemini";
 
 export type AIChatContentPart =
   | { type: "text"; text: string }
   | {
       type: "image_url";
       image_url: { url: string; detail?: "low" | "high" | "auto" };
+    }
+  | {
+      type: "youtube_url";
+      youtube_url: { url: string };
     };
 
 export type AIChatMessage = {
